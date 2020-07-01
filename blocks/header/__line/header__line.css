@@ -1,0 +1,12 @@
+.header__line {
+  width: 100%;
+  background: #545454;
+  height: 1px;
+  margin-top: 40px;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .header__line {
+    margin-top: 30px;
+  }
+}

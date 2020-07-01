@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Mesto</title>
+
+  <link rel="stylesheet" href="./pages/index.css" type="text/css" />
+</head>
+
+<body class="page">
+  <div class="popup">
+    <div class="popup__form-block">
+      <h3 class="popup__title">Редактировать профиль</h3>
+      <form class="popup__form">
+        <input type="text" name="name" placeholder="Жак-Ив Кусто" value="Жак-Ив Кусто"
+          class="popup__input popup__input_type_name">
+        <div class="popup__line"></div>
+        <input type="text" name="name" placeholder="Исследователь океана" value="Исследователь океана"
+          class="popup__input popup__input_type_activities">
+        <div class="popup__line"></div>
+        <input type="button" class="popup__submit-button" value="Изменить">
+      </form>
+    </div>
+    <div class="popup__close-btn">
+  </div>
+  </div>
+
+  <div class="page__content">
+    <header class="header">
+      <img src="./images/logo.svg" alt="Логотип" class="header__logo">
+      <div class="header__line"></div>
+    </header>
+
+    <section class="profile">
+      <img src="./images/image.jpg" class="profile__photo" alt="Фотография профиля">
+      <div class="profile__info">
+        <h1 class="profile__name">Жак-Ив Кусто</h1>
+        <button class="profile__edit-button">
+          <img class="profile__edit-image" alt="Редактировать" src="./images/edit.svg">
+        </button>
+        <p class="profile__activities">Исследователь океана</p>
+      </div>
+      <button class="profile__add-button">
+        <img src="./images/plus.svg" alt="Добавить" class="profile__add-images">
+      </button>
+    </section>
+
+    <section class="elements">
+      <div class="element">
+        <img src="./images/karachevsk.jpg" alt="Карачевск фото" class="element__photo">
+        <div class="element__info">
+          <h2 class="element__title">Карачаевск</h2>
+          <img src="./images/like.svg" alt="Оценить" class="element__like-button">
+        </div>
+      </div>
+      <div class="element">
+        <img src="./images/elbrus.png" alt="Карачевск фото" class="element__photo">
+        <div class="element__info">
+          <h2 class="element__title">Гора Эльбрус</h2>
+          <img src="./images/like.svg" alt="Оценить" class="element__like-button">
+        </div>
+      </div>
+      <div class="element">
+        <img src="./images/dombai.png" alt="Карачевск фото" class="element__photo">
+        <div class="element__info">
+          <h2 class="element__title">Домбай</h2>
+          <img src="./images/like.svg" alt="Оценить" class="element__like-button">
+        </div>
+      </div>
+      <div class="element">
+        <img src="./images/elbrus.png" alt="Карачевск фото" class="element__photo">
+        <div class="element__info">
+          <h2 class="element__title">Гора Эльбрус</h2>
+          <img src="./images/like.svg" alt="Оценить" class="element__like-button">
+        </div>
+      </div>
+      <div class="element">
+        <img src="./images/dombai.png" alt="Карачевск фото" class="element__photo">
+        <div class="element__info">
+          <h2 class="element__title">Домбай</h2>
+          <img src="./images/like.svg" alt="Оценить" class="element__like-button">
+        </div>
+      </div>
+      <div class="element">
+        <img src="./images/karachevsk.jpg" alt="Карачевск фото" class="element__photo">
+        <div class="element__info">
+          <h2 class="element__title">Карачаево-Черкесская</h2>
+          <img src="./images/like.svg" alt="Оценить" class="element__like-button">
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
+    </footer>
+  </div>
+
+  <script src="./scripts/script.js"></script>
+</body>
+
+</html>
