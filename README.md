@@ -14,4 +14,4 @@
 **О проекте**
 
 Здесь будет проект об определенных местах, реализованный на основе макета Figma, созданного командой Практикума.
-Страница проекта на GitHub Pages: https://muffincolor.github.io/russian-travel/
+Страница проекта на GitHub Pages: https://muffincolor.github.io/mesto/
