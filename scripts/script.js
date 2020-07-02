@@ -44,6 +44,8 @@ function formSubmitHandler(evt) {
 
   profileName.textContent = newName.value;
   profileActivities.textContent = newActivities.value;
+
+  togglePopup();
 }
 
 formElement.addEventListener('submit', formSubmitHandler);
