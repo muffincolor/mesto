@@ -5,4 +5,7 @@
   height: 60px;
   margin-top: -60px;
   cursor: pointer;
+
+  outline: none;
+  border: none;
 }

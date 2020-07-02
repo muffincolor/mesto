@@ -5,15 +5,31 @@
 @import url(./__info/profile__info.css);
 @import url(./__name/profile__name.css);
 @import url(./__photo/profile__photo.css);
+@import url(./__supporting-block/profile__supporting-block.css);
 
 .profile {
   width: 70%;
-  height: 120px;
+  min-height: 120px;
   margin: 40px auto;
 
   display: grid;
-  grid-template-columns: 14% 71% 15%;
+  grid-template-columns: 14% 66% 20%;
 }
+
+@media only screen and (min-width: 1024px) and (max-width: 1279px) {
+  .profile {
+    width: 80%;
+    grid-template-columns: 13% 67% 20%;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+  .profile {
+    width: 80%;
+    grid-template-columns: 16% 64% 20%;
+  }
+}
+
 
 @media only screen and (min-width: 320px) and (max-width: 767px) {
   .profile {

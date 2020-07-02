@@ -17,6 +17,13 @@
   transition: opacity 0.3s ease-out;
 
   outline: none;
+
+  background-image: url(../../../images/plus.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+
+  position: relative;
+  z-index: 2;
 }
 
 .profile__add-button:hover {
