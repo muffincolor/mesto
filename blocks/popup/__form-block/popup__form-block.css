@@ -2,10 +2,10 @@
   margin: auto auto;
 
   display: flex;
+  position: relative;
+  /* opacity: 0; */
 }
 
 @media only screen and (min-width: 320px) and (max-width: 767px) {
-  .popup__form-block {
-    width: 300px;
-  }
+  .popup__form-block {}
 }

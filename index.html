@@ -11,21 +11,6 @@
 </head>
 
 <body class="page">
-  <div class="popup">
-    <div class="popup__form-block">
-      <div class="popup__content">
-        <h3 class="popup__title">Редактировать профиль</h3>
-        <form class="popup__form">
-          <input type="text" name="name" placeholder="Жак-Ив Кусто" value="Жак-Ив Кусто"
-            class="popup__input popup__input_type_name">
-          <input type="text" name="name" placeholder="Исследователь океана" value="Исследователь океана"
-            class="popup__input popup__input_type_activities">
-          <input type="submit" class="popup__submit-button" value="Изменить">
-        </form>
-      </div>
-      <button class="popup__close-btn"></button>
-    </div>
-  </div>
   <div class="page__content">
     <header class="header">
       <img src="./images/logo.svg" alt="Логотип" class="header__logo">
@@ -44,56 +29,51 @@
     </main>
 
     <section class="elements">
-      <div class="element">
-        <img src="./images/karachevsk.jpg" alt="Карачевск фото" class="element__photo">
-        <div class="element__info">
-          <h2 class="element__title">Карачаевск</h2>
-          <button class="element__like-button"></button>
-        </div>
-      </div>
-      <div class="element">
-        <img src="./images/elbrus.png" alt="Карачевск фото" class="element__photo">
-        <div class="element__info">
-          <h2 class="element__title">Гора Эльбрус</h2>
-          <button class="element__like-button"></button>
-        </div>
-      </div>
-      <div class="element">
-        <img src="./images/dombai.png" alt="Карачевск фото" class="element__photo">
-        <div class="element__info">
-          <h2 class="element__title">Домбай</h2>
-          <button class="element__like-button"></button>
-        </div>
-      </div>
-      <div class="element">
-        <img src="./images/elbrus.png" alt="Карачевск фото" class="element__photo">
-        <div class="element__info">
-          <h2 class="element__title">Гора Эльбрус</h2>
-          <button class="element__like-button"></button>
-        </div>
-      </div>
-      <div class="element">
-        <img src="./images/dombai.png" alt="Карачевск фото" class="element__photo">
-        <div class="element__info">
-          <h2 class="element__title">Домбай</h2>
-          <button class="element__like-button"></button>
-        </div>
-      </div>
-      <div class="element">
-        <img src="./images/karachevsk.jpg" alt="Карачевск фото" class="element__photo">
-        <div class="element__info">
-          <h2 class="element__title">Карачаево-Черкесская</h2>
-          <button class="element__like-button"></button>
-        </div>
-      </div>
     </section>
-
-
 
     <footer class="footer">
       <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
     </footer>
   </div>
+
+  <template id="popup-template">
+    <div class="popup">
+      <div class="popup__form-block">
+        <div class="popup__content">
+          <h3 class="popup__title"></h3>
+          <form class="popup__form">
+            <input type="text" name="name" placeholder="Жак-Ив Кусто"
+              class="popup__input popup__input_type_name">
+            <input type="text" name="name" placeholder="Исследователь океана"
+              class="popup__input popup__input_type_activities">
+            <input type="submit" class="popup__submit-button">
+          </form>
+        </div>
+        <button class="popup__close-btn"></button>
+      </div>
+    </div>
+  </template>
+
+  <template id="popup-image">
+    <div class="popup popup_type_image">
+      <div class="popup__image-block">
+        <img class="popup__image" alt="Изображение места">
+        <figure class="popup__caption"></figure>
+        <button class="popup__close-btn"></button>
+      </div>
+    </div>
+  </template>
+
+  <template id="element-template">
+    <div class="element">
+      <button class="element__delete-button"></button>
+      <img alt="Фото места" class="element__photo">
+      <div class="element__info">
+        <h2 class="element__title"></h2>
+        <button class="element__like-button"></button>
+      </div>
+    </div>
+  </template>
 
   <script src="./scripts/script.js"></script>
 </body>

@@ -1,3 +1,23 @@
 .popup_active {
   display: flex;
+  -webkit-animation: opacityToggle .7s;
+  animation: opacityToggle .7s;
+}
+
+@-webkit-keyframes opacityToggle {
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
+}
+
+@keyframes opacityToggle {
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
 }

@@ -5,14 +5,25 @@
 @import url(./__title/popup__title.css);
 @import url(./__close-btn/popup__close-btn.css);
 @import url(./__content/popup__content.css);
+@import url(./__caption/popup__caption.css);
+@import url(./__image-block/popup__image-block.css);
+@import url(./__image/popup__image.css);
+
+/*
+ААААААААА я уже замучился с этим попапом. Подскажите,  как его можно реализовать? 
+Прочитал статью на стак оверфлоу, поссмотрел примеры. Но в моем коде не понимаю как делать
+*/
 
 .popup {
   width: 100%;
   height: 100%;
   position: fixed;
-
   display: none;
+
   background: rgba(0, 0, 0, 0.5);
 
   z-index: 5;
+
+  -webkit-animation: opacityRemove .7s;
+  animation: opacityRemove .7s;
 }

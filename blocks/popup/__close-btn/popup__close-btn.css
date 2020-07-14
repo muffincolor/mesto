@@ -18,8 +18,18 @@
   transition: opacity 0.3s ease-out;
 
   justify-self: flex-start;
+  grid-area: close;
 }
 
 .popup__close-btn:hover {
   opacity: 0.6;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .popup__close-btn {
+    width: 30px;
+    height: 30px;
+    margin-top: -30px;
+    background-size: 50px 50px;
+  }
 }

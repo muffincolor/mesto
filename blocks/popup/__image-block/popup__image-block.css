@@ -1,0 +1,7 @@
+.popup__image-block {
+    display: grid;
+    grid-template-areas: "image close"
+                        "caption close";
+
+    margin: auto auto;
+}
