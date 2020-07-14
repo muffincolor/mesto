@@ -155,6 +155,9 @@ function addLike(evt) {
 }
 
 function showImage(target) {
+  if(document.querySelector('.popup') !== null) {
+    document.querySelector('.popup').remove();
+  }
   if(target.classList.contains('element__like-button') || target.classList.contains('element__delete-button')) {
     return;
   }
