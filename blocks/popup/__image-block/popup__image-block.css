@@ -1,7 +1,10 @@
 .popup__image-block {
-    display: grid;
-    grid-template-areas: "image close"
-                        "caption close";
+  display: grid;
+  grid-template-areas: "image close"
+    "caption close";
 
-    margin: auto auto;
+  margin: auto auto;
+
+  /* opacity: 0; */
+  transition: visibility .5s, opacity .5s linear;
 }
