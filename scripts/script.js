@@ -114,14 +114,13 @@ function setupPopups(target) {
 
   setTimeout(function() {
     togglePopup();
-  }, 5);
+  }, 7);
 }
 
 
 // Функция отвечающая за определение конкретного попапа и создание нужных для него инструкция
 function formSubmitHandler(evt) {
   evt.preventDefault();
-  console.log();
 
   if (document.querySelector('.popup__title').textContent === 'Новое место') { // Определяем в каком именно попапе мы находимся
     createElement(document.querySelector('.popup__input_type_name').value, document.querySelector('.popup__input_type_activities').value);
@@ -140,7 +139,7 @@ function modifyProfile(newName, newActivities) {
 
 // Активация и отключение попапа
 function togglePopup() {
-  let popup = document.querySelector('.popup');
+  const popup = document.querySelector('.popup');
   popup.classList.toggle('popup_active');
 }
 
@@ -161,7 +160,6 @@ function showImage(target) {
   const popupTemplate = document.querySelector('#popup-image').content;
   const newPopup = popupTemplate.cloneNode(true);
 
-  console.log(newPopup);
 
   newPopup.querySelector('.popup__image').src = element.querySelector('.element__photo').src;
   newPopup.querySelector('.popup__caption').textContent = element.querySelector('.element__title').textContent;
@@ -174,5 +172,5 @@ function showImage(target) {
 
   setTimeout(function() {
     togglePopup();
-  }, 5);
+  }, 7);
 }
