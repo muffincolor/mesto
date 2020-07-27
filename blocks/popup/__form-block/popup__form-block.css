@@ -1,4 +1,5 @@
 .popup__form-block {
+  width: 560px;
   margin: auto auto;
 
   display: flex;

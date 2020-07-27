@@ -8,6 +8,7 @@
   <title>Mesto</title>
 
   <link rel="stylesheet" type="text/css" href="./pages/index.css">
+  <script src="./scripts/index.js" defer></script>
 </head>
 
 <body class="page">
@@ -36,16 +37,37 @@
     </footer>
   </div>
 
-  <template id="popup-template">
+  <template id="popup-edit-profile">
     <div class="popup">
       <div class="popup__form-block">
         <div class="popup__content">
           <h3 class="popup__title"></h3>
-          <form class="popup__form">
-            <input type="text" name="name" placeholder="Жак-Ив Кусто" class="popup__input popup__input_type_name">
-            <input type="text" name="name" placeholder="Исследователь океана"
-              class="popup__input popup__input_type_activities">
-            <input type="submit" class="popup__submit-button">
+          <form class="popup__form" novalidate>
+            <input type="text" name="name" placeholder="Жак-Ив Кусто" class="popup__input popup__input_type_name" minlength="2" maxlength="40" id="name-input" required>
+            <span class="popup__input-error" id="name-input-error"></span>
+            <input type="text" name="activities" id="activities-input" placeholder="Исследователь океана"
+              class="popup__input popup__input_type_activities" minlength="2" maxlength="200" required>
+            <span class="popup__input-error"id="activities-input-error"></span>
+            <input type="submit" class="popup__submit-button" value="Изменить">
+          </form>
+        </div>
+        <button class="popup__close-btn"></button>
+      </div>
+    </div>
+  </template>
+
+  <template id="popup-add-place">
+    <div class="popup">
+      <div class="popup__form-block">
+        <div class="popup__content">
+          <h3 class="popup__title"></h3>
+          <form class="popup__form" novalidate>
+            <input type="text" name="title" placeholder="Название" class="popup__input popup__input_type_name" required minlength="1" maxlength="30" id="title-input">
+            <span class="popup__input-error" id="title-input-error"></span>
+            <input type="url" name="url" placeholder="Ссылка на картинку"
+              class="popup__input popup__input_type_activities" required id="url-input">
+            <span class="popup__input-error" id="url-input-error"></span>
+            <input type="submit" class="popup__submit-button" value="Добавить">
           </form>
         </div>
         <button class="popup__close-btn"></button>
@@ -54,7 +76,7 @@
   </template>
 
   <template id="popup-image">
-    <div class="popup popup_type_image">
+    <div class="popup">
       <div class="popup__image-block">
         <img class="popup__image" alt="Изображение места">
         <figure class="popup__caption"></figure>
@@ -74,7 +96,7 @@
     </div>
   </template>
 
-  <script src="./scripts/script.js"></script>
+  <script src="./scripts/validate.js"></script>
 </body>
 
 </html>

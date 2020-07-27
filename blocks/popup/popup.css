@@ -1,4 +1,5 @@
 @import url(./__submit-button/popup__submit-button.css);
+@import url(./__input/_type/_error/popup__input_type_error.css);
 @import url(./__form-block/popup__form-block.css);
 @import url(./__form/popup__form.css);
 @import url(./__input/popup__input.css);
@@ -8,6 +9,7 @@
 @import url(./__caption/popup__caption.css);
 @import url(./__image-block/popup__image-block.css);
 @import url(./__image/popup__image.css);
+@import url(./__input-error/popup__input-error.css);
 
 .popup {
   background-color: rgba(0, 0, 0, 0.5);

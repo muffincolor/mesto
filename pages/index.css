@@ -2,7 +2,6 @@
 @import url(../vendor/normalize.css);
 @import url(../vendor/font/font.css);
 @import url(../blocks/popup/popup.css);
-@import url(../blocks/popup/_type/popup_type_image.css);
 @import url(../blocks/popup/_active/popup_active.css);
 @import url(../blocks/page/page.css);
 @import url(../blocks/header/header.css);
