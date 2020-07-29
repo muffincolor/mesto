@@ -163,10 +163,6 @@ function renderEditPopup() {
   newPopup.querySelector('.popup__input_type_activities').value = profileActivities.textContent;
 
   placePopupOnPage(newPopup);
-
-  setTimeout(function () {
-    togglePopup();
-  }, 2);
 }
 
 function renderAddPlacePopup() {
@@ -185,10 +181,6 @@ function renderAddPlacePopup() {
   newPopup.querySelector('.popup__submit-button').value = 'Создать';
 
   placePopupOnPage(newPopup);
-
-  setTimeout(function () {
-    togglePopup();
-  }, 2);
 }
 
 function showImagePopup(evt) {
@@ -207,21 +199,19 @@ function showImagePopup(evt) {
   newPopup.querySelector('.popup__caption').textContent = element.querySelector('.element__title').textContent;
 
   placePopupOnPage(newPopup);
-
-  setTimeout(function () {
-    togglePopup();
-  }, 2);
 }
 
 function placePopupOnPage(popup) {
   document.querySelector('.page').prepend(popup);
 
-
-
   closePopupByCloseButton();
   closePopupByOverlay();
   closePopupByEscape();
   enableValidation();
+
+  setTimeout(function () {
+    togglePopup();
+  }, 2);
 }
 
 function setupActionOnSubmitForEditForm(popupForm) {
