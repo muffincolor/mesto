@@ -28,17 +28,15 @@ createElements();
 
 function createElements() {
   initialCards.forEach(function (cardInfo) {
-    renderElement(cardInfo.name, cardInfo.link);
+    placeElementOnPage(renderElement(cardInfo.name, cardInfo.link));
   });
-  // После рендеринга карточек на странице регистрируем все кнопки
+
   registerLikeButton();
   registerDeleteButton();
   registerClickOnImage();
 }
 
 function renderElement(name, link) {
-  const elementsBlock = document.querySelector('.elements');
-
   const elemntTemplate = document.querySelector('#element-template').content;
   const newElement = elemntTemplate.cloneNode(true);
 
@@ -46,10 +44,14 @@ function renderElement(name, link) {
   newElement.querySelector('.element__info').querySelector('.element__title').textContent = name;
   newElement.querySelector('.element__photo').src = link;
 
-  elementsBlock.prepend(newElement);
+  return newElement;
 }
 
-//TODO вызвать
+function placeElementOnPage(element) {
+  const elementsBlock = document.querySelector('.elements');
+  elementsBlock.prepend(element);
+}
+
 function registerLikeButton() {
   document.querySelector('.elements').addEventListener('click', likeElement);
 }
@@ -60,7 +62,6 @@ function likeElement(evt) {
   }
 }
 
-//TODO вызвать
 function registerDeleteButton() {
   document.querySelector('.elements').addEventListener('click', deleteElement);
 }
@@ -71,36 +72,8 @@ function deleteElement(evt) {
   }
 }
 
-//TODO вызвать
 function registerClickOnImage() {
   document.querySelector('.elements').addEventListener('click', showImagePopup);
-}
-
-function showImagePopup(evt) {
-  if (isPopupExists()) {
-    document.querySelector('.popup').remove();
-  } else if (isActionButton(evt.target)) {
-    return;
-  }
-
-  const element = evt.target.closest('.element');
-  const popupTemplate = document.querySelector('#popup-image').content;
-  const newPopup = popupTemplate.cloneNode(true);
-
-
-  newPopup.querySelector('.popup__image').src = element.querySelector('.element__photo').src;
-  newPopup.querySelector('.popup__caption').textContent = element.querySelector('.element__title').textContent;
-
-  newPopup.querySelector('.popup__close-btn').addEventListener('click', togglePopup);
-
-  document.querySelector('.page').prepend(newPopup);
-
-  closePopupByOverlay();
-  closePopupByEscape();
-
-  setTimeout(function () {
-    togglePopup();
-  }, 2);
 }
 
 function isPopupExists() {
@@ -112,17 +85,28 @@ function isPopupActive() {
 }
 
 function isActionButton(target) {
-  return target.classList.contains('element__like-button') || target.classList.contains('element__delete-button');
+  let isAction = false;
+  if (target.classList.contains('element__like-button') || target.classList.contains('element__delete-button')) {
+    isAction = true;
+  }
+  return isAction;
 }
 
-function togglePopup(evt) {
+function togglePopup() {
   const popup = document.querySelector('.popup');
-  popup.classList.toggle('popup_active');
+  if (!popup.classList.contains('popup_active')) {
+    popup.classList.toggle('popup_active');
+  } else {
+    popup.classList.toggle('popup_active');
+    setTimeout(function () {
+      popup.remove();
+    }, 400);
+  }
 }
 
 function closePopupByOverlay() {
-  document.querySelector('.popup').addEventListener('click', function(evt) {
-    if(evt.target.classList[0].startsWith('popup__')) {
+  document.querySelector('.popup').addEventListener('click', function (evt) {
+    if (evt.target.classList[0].startsWith('popup__')) {
       return;
     } else {
       togglePopup();
@@ -132,11 +116,14 @@ function closePopupByOverlay() {
 
 function closePopupByEscape() {
   document.addEventListener('keydown', function (evt) {
-    console.log(evt.key);
     if (evt.key.toLowerCase() === 'escape' && isPopupExists() && isPopupActive()) {
       togglePopup();
     }
   });
+}
+
+function closePopupByCloseButton() {
+  document.querySelector('.popup__close-btn').addEventListener('click', togglePopup);
 }
 
 
@@ -157,7 +144,7 @@ function addActionsOnProfileButtons() {
   addButton.addEventListener('click', renderAddPlacePopup); // Добавить место
 }
 
-function renderEditPopup(evt) {
+function renderEditPopup() {
   if (isPopupExists()) {
     document.querySelector('.popup').remove();
   }
@@ -175,20 +162,14 @@ function renderEditPopup(evt) {
   newPopup.querySelector('.popup__input_type_activities').placeholder = 'Исследователь океана';
   newPopup.querySelector('.popup__input_type_activities').value = profileActivities.textContent;
 
-  document.querySelector('.page').prepend(newPopup);
-
-  document.querySelector('.popup__close-btn').addEventListener('click', togglePopup);
-
-  closePopupByOverlay();
-  closePopupByEscape();
-  enableValidation();
+  placePopupOnPage(newPopup);
 
   setTimeout(function () {
     togglePopup();
   }, 2);
 }
 
-function renderAddPlacePopup(evt) {
+function renderAddPlacePopup() {
   if (isPopupExists()) {
     document.querySelector('.popup').remove();
   }
@@ -203,15 +184,60 @@ function renderAddPlacePopup(evt) {
 
   newPopup.querySelector('.popup__submit-button').value = 'Создать';
 
-  document.querySelector('.page').prepend(newPopup);
-
-  document.querySelector('.popup__close-btn').addEventListener('click', togglePopup);
-
-  closePopupByOverlay();
-  closePopupByEscape();
-  enableValidation();
+  placePopupOnPage(newPopup);
 
   setTimeout(function () {
     togglePopup();
   }, 2);
+}
+
+function showImagePopup(evt) {
+  if (isPopupExists()) {
+    document.querySelector('.popup').remove();
+  } else if (isActionButton(evt.target)) {
+    return;
+  }
+
+  const element = evt.target.closest('.element');
+  const popupTemplate = document.querySelector('#popup-image').content;
+  const newPopup = popupTemplate.cloneNode(true);
+
+
+  newPopup.querySelector('.popup__image').src = element.querySelector('.element__photo').src;
+  newPopup.querySelector('.popup__caption').textContent = element.querySelector('.element__title').textContent;
+
+  placePopupOnPage(newPopup);
+
+  setTimeout(function () {
+    togglePopup();
+  }, 2);
+}
+
+function placePopupOnPage(popup) {
+  document.querySelector('.page').prepend(popup);
+
+
+
+  closePopupByCloseButton();
+  closePopupByOverlay();
+  closePopupByEscape();
+  enableValidation();
+}
+
+function setupActionOnSubmitForEditForm(popupForm) {
+  modifyProfile(popupForm.elements.name.value, popupForm.elements.activities.value);
+  togglePopup();
+}
+
+function setupActionOnSubmitForAddForm(popupForm) {
+  placeElementOnPage(renderElement(popupForm.elements.title.value, popupForm.elements.url.value));
+  togglePopup();
+
+  registerLikeButton();
+  registerDeleteButton();
+  registerClickOnImage();
+}
+
+function setupActionOnSubmitError(popupForm) {
+  alert('Ошибка');
 }

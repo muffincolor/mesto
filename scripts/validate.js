@@ -6,16 +6,14 @@ function enableValidation() {
 
       switch(evt.target.closest('.popup').querySelector('.popup__title').textContent) {
         case 'Новое место':
-          renderElement(formElement.elements.title.value, formElement.elements.url.value);
+          setupActionOnSubmitForAddForm(formElement);
           break;
         case 'Редактировать профиль':
-          modifyProfile(formElement.elements.name.value, formElement.elements.activities.value);
+          setupActionOnSubmitForEditForm(formElement);
           break;
         default:
-          alert('Ошибка');
+          setupActionOnSubmitError(formElement);
       }
-
-      togglePopup();
     });
 
     setEventListeners(formElement);
