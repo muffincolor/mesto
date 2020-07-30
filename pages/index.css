@@ -9,4 +9,5 @@
 @import url(../blocks/elements/elements.css);
 @import url(../blocks/element/element.css);
 @import url(../blocks/footer/footer.css);
+@import url(../blocks/popup/__input/_type/_error/popup__input_type_error.css);
 @import url(../blocks/element/__like-button/_status_active/element__like-button_status_active.css);

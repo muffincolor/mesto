@@ -1,4 +1,4 @@
-.popup__submit-button_status_inactive {
+.popup__button_status_inactive {
   opacity: .2;
   pointer-events: none;
   -webkit-user-select: none;

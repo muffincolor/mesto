@@ -1,3 +1,159 @@
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+});
+addActionsOnProfileButtons();
+
+function addActionsOnProfileButtons() {
+  const editButton = document.querySelector('.profile__edit-button');
+  const addButton = document.querySelector('.profile__add-button');
+
+  editButton.addEventListener('click', togglePopupByClick); // Редактировать профиль
+  addButton.addEventListener('click', togglePopupByClick); // Добавить место
+}
+
+function togglePopup(popup) {
+  popup.classList.toggle('popup_active');
+}
+
+function fillInputsForEditForm(popup) {
+  const form = popup.querySelector('.popup__form');
+  form.elements.name.value = document.querySelector('.profile__name').textContent;
+  form.elements.activities.value = document.querySelector('.profile__activities').textContent;
+}
+
+function togglePopupByClick(evt) {
+  if (!isPopupActive(evt.target)) {
+    if (evt.target.classList.contains('profile__edit-button')) {
+      fillInputsForEditForm(document.querySelector('.popup_for_edit'));
+      closePopupByOverlay(document.querySelector('.popup_for_edit'));
+      closePopupByEscape(document.querySelector('.popup_for_edit'));
+      closePopupByCloseButton(document.querySelector('.popup_for_edit'));
+      setupActionOnSubmitForEditForm(document.querySelector('.popup_for_edit').querySelector('.popup__form'));
+      togglePopup(document.querySelector('.popup_for_edit'));
+    } else if (evt.target.classList.contains('profile__add-button')) {
+      closePopupByOverlay(document.querySelector('.popup_for_add'));
+      closePopupByEscape(document.querySelector('.popup_for_add'));
+      closePopupByCloseButton(document.querySelector('.popup_for_add'));
+      setupActionOnSubmitForAddForm(document.querySelector('.popup_for_add').querySelector('.popup__form'));
+      togglePopup(document.querySelector('.popup_for_add'));
+    } else if (evt.target.classList.contains('element__photo')) {
+      setupPopupBeforeToggle(evt.target, document.querySelector('.popup_for_photo'));
+      closePopupByOverlay(document.querySelector('.popup_for_photo'));
+      closePopupByEscape(document.querySelector('.popup_for_photo'));
+      closePopupByCloseButton(document.querySelector('.popup_for_photo'));
+      togglePopup(document.querySelector('.popup_for_photo'));
+    } else {
+      alert('Ошибка');
+    }
+  } else {
+    if (evt.target.classList.contains('profile__edit-button')) {
+      togglePopup(document.querySelector('.popup_for_edit'));
+      document.querySelector('.popup_for_edit').querySelector('.popup__form').removeEventListener('submit', submitEdit);
+    } else if (evt.target.classList.contains('profile__add-button')) {
+      togglePopup(document.querySelector('.popup_for_add'));
+      document.querySelector('.popup_for_add').querySelector('.popup__form').removeEventListener('submit', submitAdd);
+    } else if (evt.target.classList.contains('element__photo')) {
+      togglePopup(document.querySelector('.popup_for_photo'));
+    } else {
+      alert('Ошибка');
+    }
+  }
+}
+
+function closePopupByOverlay(popup) {
+  if(!isPopupActive(popup)){
+    popup.addEventListener('click', closeByOverlay);
+  } else {
+    popup.removeEventListener('click', closeByOverlay);
+  }
+}
+
+function closeByOverlay(evt) {
+  if (evt.target.classList[0].startsWith('popup__')) {
+    return;
+  } else {
+    if (evt.target.classList.contains('popup_for_edit')) {
+      togglePopup(document.querySelector('.popup_for_edit'));
+    } else if (evt.target.classList.contains('popup_for_add')) {
+      togglePopup(document.querySelector('.popup_for_add'));
+    } else if (evt.target.classList.contains('popup_for_photo')) {
+      togglePopup(document.querySelector('.popup_for_photo'));
+    } else {
+      alert('Ошибка закрытия');
+    }
+  }
+}
+
+function closePopupByEscape(popup) {
+  document.addEventListener('keydown', function (evt) {
+    if (evt.key.toLowerCase() === 'escape' && isPopupActive(popup)) {
+      togglePopup(popup);
+    }
+  });
+}
+
+function closePopupByCloseButton(popup) {
+  if(!isPopupActive(popup)){
+    popup.querySelector('.popup__close-btn').addEventListener('click', closeByButton);
+  } else {
+    popup.querySelector('.popup__close-btn').removeEventListener('click', closeByButton);
+  }
+}
+
+function closeByButton(evt) {
+  togglePopup(evt.target.closest('.popup'));
+}
+
+function isPopupActive(popup) {
+  return popup.classList.contains('popup_active');
+}
+
+function setupPopupBeforeToggle(element, popup) {
+  popup.querySelector('.popup__image').src = element.src;
+  popup.querySelector('.popup__caption').textContent = element.closest('.element').querySelector('.element__title').textContent;
+}
+
+function setupActionOnSubmitForEditForm(popupForm) {
+  popupForm.addEventListener('submit', submitEdit);
+}
+
+function submitEdit(evt) {
+  evt.preventDefault();
+  modifyProfile(evt.target.elements.name.value, evt.target.elements.activities.value);
+  togglePopup(evt.target.closest('.popup'));
+}
+
+function setupActionOnSubmitForAddForm(popupForm) {
+  popupForm.addEventListener('submit', submitAdd);
+}
+
+function submitAdd(evt) {
+  evt.preventDefault();
+  placeElementOnPage(renderElement(evt.target.elements.title.value, evt.target.elements.url.value));
+  togglePopup(evt.target.closest('.popup'));
+}
+
+function modifyProfile(newName, newActivities) {
+  const profileName = document.querySelector('.profile__name');
+  const profileActivities = document.querySelector('.profile__activities');
+
+  profileName.textContent = newName;
+  profileActivities.textContent = newActivities;
+}
+
+
+
+
+
+
+
+
+
 const initialCards = [{
     name: 'Архыз',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
@@ -33,7 +189,6 @@ function createElements() {
 
   registerLikeButton();
   registerDeleteButton();
-  registerClickOnImage();
 }
 
 function renderElement(name, link) {
@@ -43,6 +198,8 @@ function renderElement(name, link) {
 
   newElement.querySelector('.element__info').querySelector('.element__title').textContent = name;
   newElement.querySelector('.element__photo').src = link;
+
+  registerClickOnImage(newElement.querySelector('.element__photo'));
 
   return newElement;
 }
@@ -72,162 +229,6 @@ function deleteElement(evt) {
   }
 }
 
-function registerClickOnImage() {
-  document.querySelector('.elements').addEventListener('click', showImagePopup);
-}
-
-function isPopupExists() {
-  return document.querySelector('.popup') !== null;
-}
-
-function isPopupActive() {
-  return document.querySelector('.popup').classList.contains('popup_active');
-}
-
-function isActionButton(target) {
-  let isAction = false;
-  if (target.classList.contains('element__like-button') || target.classList.contains('element__delete-button')) {
-    isAction = true;
-  }
-  return isAction;
-}
-
-function togglePopup() {
-  const popup = document.querySelector('.popup');
-  if (!popup.classList.contains('popup_active')) {
-    popup.classList.toggle('popup_active');
-  } else {
-    popup.classList.toggle('popup_active');
-    setTimeout(function () {
-      popup.remove();
-    }, 400);
-  }
-}
-
-function closePopupByOverlay() {
-  document.querySelector('.popup').addEventListener('click', function (evt) {
-    if (evt.target.classList[0].startsWith('popup__')) {
-      return;
-    } else {
-      togglePopup();
-    }
-  });
-}
-
-function closePopupByEscape() {
-  document.addEventListener('keydown', function (evt) {
-    if (evt.key.toLowerCase() === 'escape' && isPopupExists() && isPopupActive()) {
-      togglePopup();
-    }
-  });
-}
-
-function closePopupByCloseButton() {
-  document.querySelector('.popup__close-btn').addEventListener('click', togglePopup);
-}
-
-
-
-
-
-
-
-
-
-addActionsOnProfileButtons();
-
-function addActionsOnProfileButtons() {
-  const editButton = document.querySelector('.profile__edit-button');
-  const addButton = document.querySelector('.profile__add-button');
-
-  editButton.addEventListener('click', renderEditPopup); // Редактировать профиль
-  addButton.addEventListener('click', renderAddPlacePopup); // Добавить место
-}
-
-function renderEditPopup() {
-  if (isPopupExists()) {
-    document.querySelector('.popup').remove();
-  }
-
-  const profileName = document.querySelector('.profile__name');
-  const profileActivities = document.querySelector('.profile__activities');
-
-  const popupTemplate = document.querySelector('#popup-edit-profile').content;
-  const newPopup = popupTemplate.cloneNode(true);
-  newPopup.querySelector('.popup__title').textContent = 'Редактировать профиль';
-
-  newPopup.querySelector('.popup__input_type_name').placeholder = 'Жак-Ив-Кусто';
-  newPopup.querySelector('.popup__input_type_name').value = profileName.textContent;
-
-  newPopup.querySelector('.popup__input_type_activities').placeholder = 'Исследователь океана';
-  newPopup.querySelector('.popup__input_type_activities').value = profileActivities.textContent;
-
-  placePopupOnPage(newPopup);
-}
-
-function renderAddPlacePopup() {
-  if (isPopupExists()) {
-    document.querySelector('.popup').remove();
-  }
-
-  const popupTemplate = document.querySelector('#popup-add-place').content;
-  const newPopup = popupTemplate.cloneNode(true);
-
-  newPopup.querySelector('.popup__title').textContent = 'Новое место';
-
-  newPopup.querySelector('.popup__input_type_name').placeholder = 'Название';
-  newPopup.querySelector('.popup__input_type_activities').placeholder = 'Ссылка на картинку';
-
-  newPopup.querySelector('.popup__submit-button').value = 'Создать';
-
-  placePopupOnPage(newPopup);
-}
-
-function showImagePopup(evt) {
-  if (isPopupExists()) {
-    document.querySelector('.popup').remove();
-  } else if (isActionButton(evt.target)) {
-    return;
-  }
-
-  const element = evt.target.closest('.element');
-  const popupTemplate = document.querySelector('#popup-image').content;
-  const newPopup = popupTemplate.cloneNode(true);
-
-
-  newPopup.querySelector('.popup__image').src = element.querySelector('.element__photo').src;
-  newPopup.querySelector('.popup__caption').textContent = element.querySelector('.element__title').textContent;
-
-  placePopupOnPage(newPopup);
-}
-
-function placePopupOnPage(popup) {
-  document.querySelector('.page').prepend(popup);
-
-  closePopupByCloseButton();
-  closePopupByOverlay();
-  closePopupByEscape();
-  enableValidation();
-
-  setTimeout(function () {
-    togglePopup();
-  }, 2);
-}
-
-function setupActionOnSubmitForEditForm(popupForm) {
-  modifyProfile(popupForm.elements.name.value, popupForm.elements.activities.value);
-  togglePopup();
-}
-
-function setupActionOnSubmitForAddForm(popupForm) {
-  placeElementOnPage(renderElement(popupForm.elements.title.value, popupForm.elements.url.value));
-  togglePopup();
-
-  registerLikeButton();
-  registerDeleteButton();
-  registerClickOnImage();
-}
-
-function setupActionOnSubmitError(popupForm) {
-  alert('Ошибка');
+function registerClickOnImage(element) {
+  element.addEventListener('click', togglePopupByClick); // Редактировать профиль
 }

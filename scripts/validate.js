@@ -1,51 +1,41 @@
-function enableValidation() {
-  const formsList = Array.from(document.querySelectorAll('.popup__form'));
-  formsList.forEach((formElement) => {
+function enableValidation(params) {
+  const formList = Array.from(document.querySelectorAll(params['formSelector']));
+  formList.forEach((formElement) => {
     formElement.addEventListener('submit', function (evt) {
       evt.preventDefault();
-
-      switch(evt.target.closest('.popup').querySelector('.popup__title').textContent) {
-        case 'Новое место':
-          setupActionOnSubmitForAddForm(formElement);
-          break;
-        case 'Редактировать профиль':
-          setupActionOnSubmitForEditForm(formElement);
-          break;
-        default:
-          setupActionOnSubmitError(formElement);
-      }
     });
 
-    setEventListeners(formElement);
+    setEventListeners(formElement, params);
   });
 }
 
-function modifyProfile(newName, newActivities) {
-  const profileName = document.querySelector('.profile__name');
-  const profileActivities = document.querySelector('.profile__activities');
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+});
 
-  profileName.textContent = newName;
-  profileActivities.textContent = newActivities;
-}
-
-function setEventListeners(formElement) {
-  const inputList =  Array.from(formElement.querySelectorAll('.popup__input'));
-  const buttonElement = formElement.querySelector('.popup__submit-button');
-  toggleButtonState(inputList, buttonElement);
+function setEventListeners(formElement, params) {
+  const inputList =  Array.from(formElement.querySelectorAll(params['inputSelector']));
+  const submitButtonSelector = formElement.querySelector(params['submitButtonSelector']);
+  toggleButtonState(inputList, submitButtonSelector);
 
   inputList.forEach((inputElement) => {
-    inputElement.addEventListener('input', function() {
-      checkInputValidity(formElement, inputElement);
-      toggleButtonState(inputList, buttonElement);
+    inputElement.addEventListener('input', function () {
+      checkInputValidity(formElement, inputElement, params);
+      toggleButtonState(inputList, submitButtonSelector);
     });
   });
 }
 
-function toggleButtonState(inputList, buttonElement) {
-  if(hasInvalidInput(inputList)) {
-    buttonElement.classList.add('popup__submit-button_status_inactive');
+function toggleButtonState(inputList, submitButtonSelector) {
+  if (hasInvalidInput(inputList)) {
+    submitButtonSelector.classList.add('popup__button_status_inactive');
   } else {
-    buttonElement.classList.remove('popup__submit-button_status_inactive');
+    submitButtonSelector.classList.remove('popup__button_status_inactive');
   }
 }
 
@@ -55,24 +45,24 @@ function hasInvalidInput(inputList) {
   });
 }
 
-function checkInputValidity(formElement, inputElement) {
-  if(!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage);
+function checkInputValidity(formElement, inputElement, params) {
+  if (!inputElement.validity.valid) {
+    showInputError(formElement, inputElement, inputElement.validationMessage, params);
   } else {
-    hideInputError(formElement, inputElement);
+    hideInputError(formElement, inputElement, params);
   }
 }
 
-function hideInputError(formElement, inputElement) {
+function hideInputError(formElement, inputElement, params) {
   const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
-  inputElement.classList.remove('popup__input_type_error');
-  errorElement.classList.remove('popup__input-error_active');
+  inputElement.classList.remove(params['inputErrorClass']);
+  errorElement.classList.remove(params['errorClass']);
   errorElement.textContent = '';
 }
 
-function showInputError(formElement, inputElement, errorMessage) {
+function showInputError(formElement, inputElement, errorMessage, params) {
   const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
-  inputElement.classList.add('popup__input_type_error');
+  inputElement.classList.add(params['inputErrorClass']);
   errorElement.textContent = errorMessage;
-  errorElement.classList.add('popup__input-error_active');
+  errorElement.classList.add(params['errorClass']);
 }
