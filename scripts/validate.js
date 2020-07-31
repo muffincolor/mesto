@@ -9,15 +9,6 @@ function enableValidation(params) {
   });
 }
 
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible'
-});
-
 function setEventListeners(formElement, params) {
   const inputList =  Array.from(formElement.querySelectorAll(params['inputSelector']));
   const submitButtonSelector = formElement.querySelector(params['submitButtonSelector']);

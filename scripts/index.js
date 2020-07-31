@@ -12,61 +12,65 @@ function addActionsOnProfileButtons() {
   const editButton = document.querySelector('.profile__edit-button');
   const addButton = document.querySelector('.profile__add-button');
 
-  editButton.addEventListener('click', togglePopupByClick); // Редактировать профиль
-  addButton.addEventListener('click', togglePopupByClick); // Добавить место
+  editButton.addEventListener('click', toggleEditPopup); // Редактировать профиль
+  addButton.addEventListener('click', toggleAddPopup); // Добавить место
 }
 
 function togglePopup(popup) {
   popup.classList.toggle('popup_active');
 }
 
-function fillInputsForEditForm(popup) {
-  const form = popup.querySelector('.popup__form');
+function fillInputsForEditForm(popup, form) {
   form.elements.name.value = document.querySelector('.profile__name').textContent;
   form.elements.activities.value = document.querySelector('.profile__activities').textContent;
 }
 
-function togglePopupByClick(evt) {
+function deleteSubmitEventFromPopupForm(popupForm, callback) {
+  popupForm.removeEventListener('submit', callback);
+}
+
+function setupCloseActionsForPopup(popup) {
+  closePopupByOverlay(popup);
+  closePopupByEscape(popup);
+  closePopupByCloseButton(popup);
+}
+
+function toggleEditPopup(evt) {
   if (!isPopupActive(evt.target)) {
-    if (evt.target.classList.contains('profile__edit-button')) {
-      fillInputsForEditForm(document.querySelector('.popup_for_edit'));
-      closePopupByOverlay(document.querySelector('.popup_for_edit'));
-      closePopupByEscape(document.querySelector('.popup_for_edit'));
-      closePopupByCloseButton(document.querySelector('.popup_for_edit'));
-      setupActionOnSubmitForEditForm(document.querySelector('.popup_for_edit').querySelector('.popup__form'));
-      togglePopup(document.querySelector('.popup_for_edit'));
-    } else if (evt.target.classList.contains('profile__add-button')) {
-      closePopupByOverlay(document.querySelector('.popup_for_add'));
-      closePopupByEscape(document.querySelector('.popup_for_add'));
-      closePopupByCloseButton(document.querySelector('.popup_for_add'));
-      setupActionOnSubmitForAddForm(document.querySelector('.popup_for_add').querySelector('.popup__form'));
-      togglePopup(document.querySelector('.popup_for_add'));
-    } else if (evt.target.classList.contains('element__photo')) {
-      setupPopupBeforeToggle(evt.target, document.querySelector('.popup_for_photo'));
-      closePopupByOverlay(document.querySelector('.popup_for_photo'));
-      closePopupByEscape(document.querySelector('.popup_for_photo'));
-      closePopupByCloseButton(document.querySelector('.popup_for_photo'));
-      togglePopup(document.querySelector('.popup_for_photo'));
-    } else {
-      alert('Ошибка');
-    }
+    fillInputsForEditForm(document.querySelector('.popup_for_edit'), document.querySelector('.popup_for_edit').querySelector('.popup__form'));
+    setupCloseActionsForPopup(document.querySelector('.popup_for_edit'));
+    setupActionOnSubmitForEditForm(document.querySelector('.popup_for_edit').querySelector('.popup__form'));
+    togglePopup(document.querySelector('.popup_for_edit'));
   } else {
-    if (evt.target.classList.contains('profile__edit-button')) {
-      togglePopup(document.querySelector('.popup_for_edit'));
-      document.querySelector('.popup_for_edit').querySelector('.popup__form').removeEventListener('submit', submitEdit);
-    } else if (evt.target.classList.contains('profile__add-button')) {
-      togglePopup(document.querySelector('.popup_for_add'));
-      document.querySelector('.popup_for_add').querySelector('.popup__form').removeEventListener('submit', submitAdd);
-    } else if (evt.target.classList.contains('element__photo')) {
-      togglePopup(document.querySelector('.popup_for_photo'));
-    } else {
-      alert('Ошибка');
-    }
+    togglePopup(document.querySelector('.popup_for_edit'));
+    deleteSubmitEventFromPopupForm(document.querySelector('.popup_for_edit').querySelector('.popup__form'), submitEdit);
   }
 }
 
+function toggleAddPopup(evt) {
+  if (!isPopupActive(evt.target)) {
+    setupCloseActionsForPopup(document.querySelector('.popup_for_add'));
+    setupActionOnSubmitForAddForm(document.querySelector('.popup_for_add').querySelector('.popup__form'));
+    togglePopup(document.querySelector('.popup_for_add'));
+  } else {
+    togglePopup(document.querySelector('.popup_for_add'));
+    deleteSubmitEventFromPopupForm(document.querySelector('.popup_for_add').querySelector('.popup__form'), submitAdd);
+  }
+}
+
+function toggleImagePopup(evt) {
+  if (!isPopupActive(evt.target)) {
+    setupPopupBeforeToggle(evt.target, document.querySelector('.popup_for_photo'));
+    setupCloseActionsForPopup(document.querySelector('.popup_for_photo'));
+    togglePopup(document.querySelector('.popup_for_photo'));
+  } else {
+    togglePopup(document.querySelector('.popup_for_photo'));
+  }
+
+}
+
 function closePopupByOverlay(popup) {
-  if(!isPopupActive(popup)){
+  if (!isPopupActive(popup)) {
     popup.addEventListener('click', closeByOverlay);
   } else {
     popup.removeEventListener('click', closeByOverlay);
@@ -98,7 +102,7 @@ function closePopupByEscape(popup) {
 }
 
 function closePopupByCloseButton(popup) {
-  if(!isPopupActive(popup)){
+  if (!isPopupActive(popup)) {
     popup.querySelector('.popup__close-btn').addEventListener('click', closeByButton);
   } else {
     popup.querySelector('.popup__close-btn').removeEventListener('click', closeByButton);
@@ -132,12 +136,6 @@ function setupActionOnSubmitForAddForm(popupForm) {
   popupForm.addEventListener('submit', submitAdd);
 }
 
-function submitAdd(evt) {
-  evt.preventDefault();
-  placeElementOnPage(renderElement(evt.target.elements.title.value, evt.target.elements.url.value));
-  togglePopup(evt.target.closest('.popup'));
-}
-
 function modifyProfile(newName, newActivities) {
   const profileName = document.querySelector('.profile__name');
   const profileActivities = document.querySelector('.profile__activities');
@@ -154,6 +152,7 @@ function modifyProfile(newName, newActivities) {
 
 
 
+const elementsBlock = document.querySelector('.elements');
 const initialCards = [{
     name: 'Архыз',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
@@ -184,33 +183,31 @@ createElements();
 
 function createElements() {
   initialCards.forEach(function (cardInfo) {
-    placeElementOnPage(renderElement(cardInfo.name, cardInfo.link));
+    placeElementOnPage(elementsBlock, createElement(cardInfo.name, cardInfo.link));
   });
-
-  registerLikeButton();
-  registerDeleteButton();
 }
 
-function renderElement(name, link) {
+function createElement(name, link) {
   const elemntTemplate = document.querySelector('#element-template').content;
   const newElement = elemntTemplate.cloneNode(true);
-
 
   newElement.querySelector('.element__info').querySelector('.element__title').textContent = name;
   newElement.querySelector('.element__photo').src = link;
 
   registerClickOnImage(newElement.querySelector('.element__photo'));
 
+  registerLikeButton(newElement.querySelector('.element__like-button'));
+  registerDeleteButton(newElement.querySelector('.element__delete-button'));
+
   return newElement;
 }
 
-function placeElementOnPage(element) {
-  const elementsBlock = document.querySelector('.elements');
+function placeElementOnPage(elementsBlock, element) {
   elementsBlock.prepend(element);
 }
 
-function registerLikeButton() {
-  document.querySelector('.elements').addEventListener('click', likeElement);
+function registerLikeButton(button) {
+  button.addEventListener('click', likeElement);
 }
 
 function likeElement(evt) {
@@ -219,8 +216,8 @@ function likeElement(evt) {
   }
 }
 
-function registerDeleteButton() {
-  document.querySelector('.elements').addEventListener('click', deleteElement);
+function registerDeleteButton(button) {
+  button.addEventListener('click', deleteElement);
 }
 
 function deleteElement(evt) {
@@ -230,5 +227,11 @@ function deleteElement(evt) {
 }
 
 function registerClickOnImage(element) {
-  element.addEventListener('click', togglePopupByClick); // Редактировать профиль
+  element.addEventListener('click', toggleImagePopup); // Редактировать профиль
+}
+
+function submitAdd(evt) {
+  evt.preventDefault();
+  placeElementOnPage(elementsBlock, createElement(evt.target.elements.title.value, evt.target.elements.url.value));
+  togglePopup(evt.target.closest('.popup'));
 }
