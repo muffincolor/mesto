@@ -36,60 +36,33 @@ function setupCloseActionsForPopup(popup) {
 }
 
 function toggleEditPopup(evt) {
-  if (!isPopupActive(evt.target)) {
-    fillInputsForEditForm(document.querySelector('.popup_for_edit'), document.querySelector('.popup_for_edit').querySelector('.popup__form'));
-    setupCloseActionsForPopup(document.querySelector('.popup_for_edit'));
-    setupActionOnSubmitForEditForm(document.querySelector('.popup_for_edit').querySelector('.popup__form'));
-    togglePopup(document.querySelector('.popup_for_edit'));
-  } else {
-    togglePopup(document.querySelector('.popup_for_edit'));
-    deleteSubmitEventFromPopupForm(document.querySelector('.popup_for_edit').querySelector('.popup__form'), submitEdit);
-  }
+  fillInputsForEditForm(document.querySelector('.popup_for_edit'), document.querySelector('.popup_for_edit').querySelector('.popup__form'));
+  setupCloseActionsForPopup(document.querySelector('.popup_for_edit'));
+  setupActionOnSubmitForEditForm(document.querySelector('.popup_for_edit').querySelector('.popup__form'));
+  togglePopup(document.querySelector('.popup_for_edit'));
 }
 
 function toggleAddPopup(evt) {
-  if (!isPopupActive(evt.target)) {
-    setupCloseActionsForPopup(document.querySelector('.popup_for_add'));
-    setupActionOnSubmitForAddForm(document.querySelector('.popup_for_add').querySelector('.popup__form'));
-    togglePopup(document.querySelector('.popup_for_add'));
-  } else {
-    togglePopup(document.querySelector('.popup_for_add'));
-    deleteSubmitEventFromPopupForm(document.querySelector('.popup_for_add').querySelector('.popup__form'), submitAdd);
-  }
+  setupCloseActionsForPopup(document.querySelector('.popup_for_add'));
+  setupActionOnSubmitForAddForm(document.querySelector('.popup_for_add').querySelector('.popup__form'));
+  togglePopup(document.querySelector('.popup_for_add'));
 }
 
 function toggleImagePopup(evt) {
-  if (!isPopupActive(evt.target)) {
-    setupPopupBeforeToggle(evt.target, document.querySelector('.popup_for_photo'));
-    setupCloseActionsForPopup(document.querySelector('.popup_for_photo'));
-    togglePopup(document.querySelector('.popup_for_photo'));
-  } else {
-    togglePopup(document.querySelector('.popup_for_photo'));
-  }
-
+  setupPopupBeforeToggle(evt.target, document.querySelector('.popup_for_photo'));
+  setupCloseActionsForPopup(document.querySelector('.popup_for_photo'));
+  togglePopup(document.querySelector('.popup_for_photo'));
 }
 
 function closePopupByOverlay(popup) {
-  if (!isPopupActive(popup)) {
-    popup.addEventListener('click', closeByOverlay);
-  } else {
-    popup.removeEventListener('click', closeByOverlay);
-  }
+  popup.addEventListener('click', closeByOverlay); // Здесь идет выбор нужного нам попапа и вешается колбэк, который отсеивается все элементы кроме оверлея.
 }
 
 function closeByOverlay(evt) {
-  if (evt.target.classList[0].startsWith('popup__')) {
+  if (evt.target.classList[0].startsWith('popup__')) { // Если это не оверлей, то выходим из фукнкции
     return;
-  } else {
-    if (evt.target.classList.contains('popup_for_edit')) {
-      togglePopup(document.querySelector('.popup_for_edit'));
-    } else if (evt.target.classList.contains('popup_for_add')) {
-      togglePopup(document.querySelector('.popup_for_add'));
-    } else if (evt.target.classList.contains('popup_for_photo')) {
-      togglePopup(document.querySelector('.popup_for_photo'));
-    } else {
-      alert('Ошибка закрытия');
-    }
+  } else { // если же клик прошел по оверлею, закрываем
+    togglePopup(evt.target);
   }
 }
 
@@ -102,11 +75,7 @@ function closePopupByEscape(popup) {
 }
 
 function closePopupByCloseButton(popup) {
-  if (!isPopupActive(popup)) {
-    popup.querySelector('.popup__close-btn').addEventListener('click', closeByButton);
-  } else {
-    popup.querySelector('.popup__close-btn').removeEventListener('click', closeByButton);
-  }
+  popup.querySelector('.popup__close-btn').addEventListener('click', closeByButton); // Здесь идет выбор крестика для нужного нам попапа и вешается событие его закрытия
 }
 
 function closeByButton(evt) {
