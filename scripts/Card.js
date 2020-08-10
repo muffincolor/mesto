@@ -1,3 +1,5 @@
+import { toggleImagePopup } from './index.js';
+
 class Card {
   constructor(data, cardSelector) {
     this._name = data.name;
@@ -17,6 +19,7 @@ class Card {
   _setEventListeners() {
     this._element.querySelector('.element__like-button').addEventListener('click', this._likeElement);
     this._element.querySelector('.element__delete-button').addEventListener('click', this._deleteElement);
+    this._element.querySelector('.element__photo').addEventListener('click', toggleImagePopup);
   }
 
   _likeElement(evt) {
@@ -27,7 +30,7 @@ class Card {
 
   _deleteElement(evt) {
     if (evt.target.classList.contains('element__delete-button')) {
-      evt.target.closest('.element').remove();
+      this._element.remove();
     }
   }
 

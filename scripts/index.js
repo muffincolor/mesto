@@ -128,18 +128,10 @@ function modifyProfile(newName, newActivities) {
 
 function submitAdd(evt) {
   evt.preventDefault();
-  placeElementOnPage(elementsBlock, createElement(evt.target.elements.title.value, evt.target.elements.url.value));
+
+  placeElementOnPage(cardsBlock, createElement({ name: evt.target.elements.title.value, link: evt.target.elements.url.value }));
   togglePopup(evt.target.closest('.popup'));
 }
-
-
-
-
-
-
-
-
-
 
 const cardsBlock = document.querySelector('.elements');
 const initialCards = [{
@@ -168,20 +160,25 @@ const initialCards = [{
   }
 ];
 
-createElements();
-
 function createElements() {
-  initialCards.forEach(function (cardInfo) {
-    const card = new Card(cardInfo, '#element-template');
-    const cardElement = card.generateCard();
-
-    //Добавление слушателя для открытия попапа
-    cardElement.querySelector('.element__photo').addEventListener('click', toggleImagePopup);
+  initialCards.forEach((cardInfo) => {
+    const cardElement = createElement(cardInfo);
 
     placeElementOnPage(cardsBlock, cardElement);
   });
 }
 
+function createElement(data) {
+  const card = new Card(data, '#element-template');
+  const cardElement = card.generateCard();
+
+  return cardElement;
+}
+
+createElements();
+
 function placeElementOnPage(elementsBlock, element) {
   elementsBlock.prepend(element);
 }
+
+export { toggleImagePopup };
