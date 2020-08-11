@@ -1,4 +1,6 @@
-import { toggleImagePopup } from './index.js';
+import {
+  toggleImagePopup
+} from './index.js';
 
 class Card {
   constructor(data, cardSelector) {
@@ -30,7 +32,7 @@ class Card {
 
   _deleteElement(evt) {
     if (evt.target.classList.contains('element__delete-button')) {
-      this._element.remove();
+      evt.target.closest('.element').remove();
     }
   }
 
@@ -45,4 +47,6 @@ class Card {
   }
 }
 
-export { Card };
+export {
+  Card
+};
