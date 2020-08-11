@@ -17,14 +17,14 @@ function startSetupFormsValidation() {
   });
 }
 
-function toggleEditPopup(evt) {
+function toggleEditPopup() {
   fillInputsForEditForm(document.querySelector('.popup_for_edit'), document.querySelector('.popup_for_edit').querySelector('.popup__form'));
   setupCloseActionsForPopup(document.querySelector('.popup_for_edit'));
   setupActionOnSubmitForEditForm(document.querySelector('.popup_for_edit').querySelector('.popup__form'));
   togglePopup(document.querySelector('.popup_for_edit'));
 }
 
-function toggleAddPopup(evt) {
+function toggleAddPopup() {
   setupCloseActionsForPopup(document.querySelector('.popup_for_add'));
   setupActionOnSubmitForAddForm(document.querySelector('.popup_for_add').querySelector('.popup__form'));
   togglePopup(document.querySelector('.popup_for_add'));
@@ -55,10 +55,6 @@ function togglePopup(popup) {
 function fillInputsForEditForm(popup, form) {
   form.elements.name.value = document.querySelector('.profile__name').textContent;
   form.elements.activities.value = document.querySelector('.profile__activities').textContent;
-}
-
-function deleteSubmitEventFromPopupForm(popupForm, callback) {
-  popupForm.removeEventListener('submit', callback);
 }
 
 function setupCloseActionsForPopup(popup) {
