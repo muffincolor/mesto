@@ -1,11 +1,8 @@
+@import url(./__block/elements__block.css);
+
 .elements {
   width: 70%;
   margin: 50px auto;
-
-  display: grid;
-  grid-template-columns: repeat(3, 285px);
-  grid-auto-rows: 360px;
-  grid-gap: 20px;
 
   padding-bottom: 40px;
 }
@@ -14,7 +11,6 @@
   .elements {
     margin: 36px auto 0;
     width: 600px;
-    grid-template-columns: repeat(2, 285px);
     padding-bottom: 0;
   }
 }
@@ -23,7 +19,6 @@
   .elements {
     margin: 36px auto 0;
     width: 285px;
-    grid-template-columns: 285px;
     padding-bottom: 0;
   }
 }

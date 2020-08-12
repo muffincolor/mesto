@@ -1,8 +1,6 @@
-import {
-  toggleImagePopup
-} from './index.js';
+import toggleImagePopup from './index.js';
 
-class Card {
+export default class Card {
   constructor(data, cardSelector) {
     this._name = data.name;
     this._image = data.link;
@@ -21,7 +19,16 @@ class Card {
   _setEventListeners() {
     this._element.querySelector('.element__like-button').addEventListener('click', this._likeElement);
     this._element.querySelector('.element__delete-button').addEventListener('click', this._deleteElement);
-    this._element.querySelector('.element__photo').addEventListener('click', toggleImagePopup);
+    this._element.querySelector('.element__photo').addEventListener('click', () => {
+      this._setupAndOpenPopup();
+    });
+  }
+
+  _setupAndOpenPopup() {
+    const popup = document.querySelector('.popup_for_photo');
+    popup.querySelector('.popup__image').src = this._image;
+    popup.querySelector('.popup__caption').textContent = this._name;
+    toggleImagePopup();
   }
 
   _likeElement(evt) {
@@ -46,7 +53,3 @@ class Card {
     return this._element;
   }
 }
-
-export {
-  Card
-};

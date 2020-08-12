@@ -1,0 +1,24 @@
+.elements__block {
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: repeat(3, 285px);
+  grid-auto-rows: 360px;
+  grid-gap: 20px;
+
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1279px) {
+  .elements__block {
+    grid-template-columns: repeat(2, 285px);
+  }
+}
+
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .elements__block {
+    grid-template-columns: 285px;
+  }
+}

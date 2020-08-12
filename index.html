@@ -30,6 +30,7 @@
     </main>
 
     <section class="elements">
+      <ul class="elements__block"></ul>
     </section>
 
     <footer class="footer">
@@ -37,7 +38,7 @@
     </footer>
   </div>
 
-  <div class="popup popup_for_edit">
+  <div class="popup popup_for_edit popup__close">
     <div class="popup__form-block">
       <div class="popup__content">
         <h3 class="popup__title">Редактировать профиль</h3>
@@ -55,7 +56,7 @@
     </div>
   </div>
 
-  <div class="popup popup_for_add">
+  <div class="popup popup_for_add popup__close">
     <div class="popup__form-block">
       <div class="popup__content">
         <h3 class="popup__title">Новое место</h3>
@@ -73,7 +74,7 @@
     </div>
   </div>
 
-  <div class="popup popup_for_photo">
+  <div class="popup popup_for_photo popup__close">
     <div class="popup__image-block">
       <img class="popup__image" alt="Изображение места">
       <figure class="popup__caption"></figure>
@@ -82,14 +83,14 @@
   </div>
 
   <template id="element-template">
-    <ul class="element">
+    <li class="element">
       <button class="element__delete-button"></button>
       <img alt="Фото места" class="element__photo">
-      <li class="element__info">
+      <div class="element__info">
         <h2 class="element__title"></h2>
         <button class="element__like-button"></button>
-      </li>
-    </ul>
+      </div>
+    </li>
   </template>
 </body>
 
