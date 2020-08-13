@@ -1,4 +1,4 @@
-import { toggleImagePopup } from './index.js';
+import { setupCloseActionsForPopup, openPopup } from './index.js';
 
 export default class Card {
   constructor(data, cardSelector) {
@@ -28,7 +28,8 @@ export default class Card {
     const popup = document.querySelector('.popup_for_photo');
     popup.querySelector('.popup__image').src = this._image;
     popup.querySelector('.popup__caption').textContent = this._name;
-    toggleImagePopup();
+    setupCloseActionsForPopup(popup);
+    openPopup(popup);
   }
 
   _likeElement(evt) {
