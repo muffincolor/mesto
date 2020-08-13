@@ -35,113 +35,94 @@ const params = {
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__error_visible'
 };
+const editPopup = document.querySelector('.popup_for_edit');
+const addPopup = document.querySelector('.popup_for_add');
+const imagePopup = document.querySelector('.popup_for_photo');
 
-function startSetupFormsValidation() {
+const startSetupFormsValidation = function() {
   document.querySelectorAll('.popup__form').forEach(function (form) {
     const formValidator = new FormValidator(params, form);
     formValidator.enableValidation();
   });
-}
+};
 
 startSetupFormsValidation();
 
-function toggleEditPopup() {
-  const editPopup = document.querySelector('.popup_for_edit');
+const toggleEditPopup = function() {
   fillInputsForEditForm(editPopup.querySelector('.popup__form'));
   setupCloseActionsForPopup(editPopup);
-  setupActionOnSubmitForEditForm(editPopup.querySelector('.popup__form'));
+  editPopup.querySelector('.popup__form').addEventListener('submit', submitEdit);
   openPopup(editPopup);
-}
+};
 
-function toggleAddPopup() {
-  const addPopup = document.querySelector('.popup_for_add');
+const toggleAddPopup = function() {
   setupCloseActionsForPopup(addPopup);
-  setupActionOnSubmitForAddForm(addPopup.querySelector('.popup__form'));
+  addPopup.querySelector('.popup__form').addEventListener('submit', submitAdd);
   openPopup(addPopup);
-}
+};
 
-export default function toggleImagePopup(evt) {
-  const imagePopup = document.querySelector('.popup_for_photo');
+export const toggleImagePopup = function() {
   setupCloseActionsForPopup(imagePopup);
   openPopup(imagePopup);
-}
+};
 
-function addActionsOnProfileButtons() {
+const addActionsOnProfileButtons = function() {
   const editButton = document.querySelector('.profile__edit-button');
   const addButton = document.querySelector('.profile__add-button');
 
   editButton.addEventListener('click', toggleEditPopup); // Редактировать профиль
   addButton.addEventListener('click', toggleAddPopup); // Добавить место
-}
+};
 
 addActionsOnProfileButtons();
 
-function openPopup(popup) {
+const openPopup = function(popup) {
   popup.classList.add('popup_active');
-}
+  document.addEventListener('keyup', closePopupByEscape);
+};
 
-function closePopup(popup) {
+const closePopup = function(popup) {
   popup.classList.remove('popup_active');
-}
+  document.removeEventListener('keyup', closePopupByEscape);
+};
 
-function fillInputsForEditForm(form) {
+const fillInputsForEditForm = function(form) {
   form.elements.name.value = document.querySelector('.profile__name').textContent;
   form.elements.activities.value = document.querySelector('.profile__activities').textContent;
-}
+};
 
-function setupCloseActionsForPopup(popup) {
-  closePopupByOverlay(popup);
-  closePopupByEscape(popup);
-  closePopupByCloseButton(popup);
-}
+const setupCloseActionsForPopup = function(popup) {
+  popup.addEventListener('click', closePopupByOverlayOrButton);
+};
 
-function closePopupByOverlay(popup) {
-  popup.addEventListener('click', (evt) => {
-    if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close')) {
-      closePopup(popup);
-    }
-  }); // Здесь идет выбор нужного нам попапа и вешается колбэк, который отсеивается все элементы кроме оверлея.
-}
+const closePopupByOverlayOrButton = function(evt) {
+  if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close-btn')) {
+    closePopup(evt.target.closest('.popup'));
+  }
+};
 
-function closePopupByEscape(popup) {
-  document.addEventListener('keydown', (evt) => {
-    if (evt.key.toLowerCase() === 'escape' && document.querySelector('.popup_active') !== undefined) {
-      closePopup(popup);
-    }
-  });
-}
+const closePopupByEscape = function(evt) {
+  const activePopup = document.querySelector('.popup_active');
+  if (evt.key === 'Escape') {
+    closePopup(activePopup);
+  }
+};
 
-function closePopupByCloseButton(popup) {
-  popup.querySelector('.popup__close-btn').addEventListener('click', closeByButton); // Здесь идет выбор крестика для нужного нам попапа и вешается событие его закрытия
-}
-
-function closeByButton(evt) {
-  closePopup(evt.target.closest('.popup'));
-}
-
-function setupActionOnSubmitForEditForm(popupForm) {
-  popupForm.addEventListener('submit', submitEdit);
-}
-
-function submitEdit(evt) {
-  evt.preventDefault();
-  modifyProfile(evt.target.elements.name.value, evt.target.elements.activities.value);
-  closePopup(evt.target.closest('.popup'));
-}
-
-function setupActionOnSubmitForAddForm(popupForm) {
-  popupForm.addEventListener('submit', submitAdd);
-}
-
-function modifyProfile(newName, newActivities) {
+const modifyProfile = function(newName, newActivities) {
   const profileName = document.querySelector('.profile__name');
   const profileActivities = document.querySelector('.profile__activities');
 
   profileName.textContent = newName;
   profileActivities.textContent = newActivities;
-}
+};
 
-function submitAdd(evt) {
+const submitEdit = function(evt) {
+  evt.preventDefault();
+  modifyProfile(evt.target.elements.name.value, evt.target.elements.activities.value);
+  closePopup(evt.target.closest('.popup'));
+};
+
+const submitAdd = function(evt) {
   evt.preventDefault();
 
   placeElementOnPage(cardsBlock, createElement({
@@ -149,25 +130,25 @@ function submitAdd(evt) {
     link: evt.target.elements.url.value
   }));
   closePopup(evt.target.closest('.popup'));
-}
+};
 
-function createElements() {
+const createElements = function() {
   initialCards.forEach((cardInfo) => {
     const cardElement = createElement(cardInfo);
 
     placeElementOnPage(cardsBlock, cardElement);
   });
-}
+};
 
-createElements();
-
-function createElement(data) {
+const createElement = function(data) {
   const card = new Card(data, '#element-template');
   const cardElement = card.generateCard();
 
   return cardElement;
-}
+};
 
-function placeElementOnPage(elementsBlock, element) {
+const placeElementOnPage = function(elementsBlock, element) {
   elementsBlock.prepend(element);
-}
+};
+
+createElements();
