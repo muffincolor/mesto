@@ -37,7 +37,6 @@ const params = {
 };
 const editPopup = document.querySelector('.popup_for_edit');
 const addPopup = document.querySelector('.popup_for_add');
-const imagePopup = document.querySelector('.popup_for_photo');
 
 const startSetupFormsValidation = function () {
   document.querySelectorAll('.popup__form').forEach(function (form) {
@@ -53,30 +52,48 @@ const addActionsOnProfileButtons = function () {
   const addButton = document.querySelector('.profile__add-button');
 
   editButton.addEventListener('click', () => {
-    fillInputsForEditForm(editPopup.querySelector('.popup__form'));
-    setupCloseActionsForPopup(editPopup);
-    editPopup.querySelector('.popup__form').addEventListener('submit', (evt) => {
-      evt.preventDefault();
-      modifyProfile(evt.target.elements.name.value, evt.target.elements.activities.value);
-      closePopup(evt.target.closest('.popup'));
-    });
+    const form = editPopup.querySelector('.popup__form');
+    form.elements.name.value = document.querySelector('.profile__name').textContent;
+    form.elements.activities.value = document.querySelector('.profile__activities').textContent;
     openPopup(editPopup);
   }); // Редактировать профиль
   addButton.addEventListener('click', () => {
-    setupCloseActionsForPopup(addPopup);
-    addPopup.querySelector('.popup__form').addEventListener('submit', (evt) => {
-      evt.preventDefault();
-      placeElementOnPage(cardsBlock, createElement({
-        name: evt.target.elements.title.value,
-        link: evt.target.elements.url.value
-      }));
-      closePopup(evt.target.closest('.popup'));
-    });
     openPopup(addPopup);
   }); // Добавить место
 };
 
-addActionsOnProfileButtons();
+document.querySelectorAll('.popup').forEach((popup) => {
+  popup.addEventListener('click', (evt) => {
+    if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close-btn')) {
+      closePopup(evt.target.closest('.popup'));
+    }
+  });
+});
+
+const editFormSubmitHandler = function(evt) {
+  evt.preventDefault();
+  modifyProfile(evt.target.elements.name.value, evt.target.elements.activities.value);
+  closePopup(evt.target.closest('.popup'));
+};
+
+editPopup.querySelector('.popup__form').addEventListener('submit', editFormSubmitHandler);
+
+const addFormSubmitHandler = function(evt) {
+  placeElementOnPage(cardsBlock, createElement({
+    name: evt.target.elements.title.value,
+    link: evt.target.elements.url.value
+  }));
+  closePopup(evt.target.closest('.popup'));
+};
+
+addPopup.querySelector('.popup__form').addEventListener('submit', addFormSubmitHandler);
+
+const closePopupByEscape = function (evt) {
+  const activePopup = document.querySelector('.popup_active');
+  if (evt.key === 'Escape') {
+    closePopup(activePopup);
+  }
+};
 
 export const openPopup = function (popup) {
   popup.classList.add('popup_active');
@@ -88,27 +105,7 @@ const closePopup = function (popup) {
   document.removeEventListener('keyup', closePopupByEscape);
 };
 
-const fillInputsForEditForm = function (form) {
-  form.elements.name.value = document.querySelector('.profile__name').textContent;
-  form.elements.activities.value = document.querySelector('.profile__activities').textContent;
-};
-
-export const setupCloseActionsForPopup = function (popup) {
-  popup.addEventListener('click', closePopupByOverlayOrButton);
-};
-
-const closePopupByOverlayOrButton = function (evt) {
-  if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close-btn')) {
-    closePopup(evt.target.closest('.popup'));
-  }
-};
-
-const closePopupByEscape = function (evt) {
-  const activePopup = document.querySelector('.popup_active');
-  if (evt.key === 'Escape') {
-    closePopup(activePopup);
-  }
-};
+addActionsOnProfileButtons();
 
 const modifyProfile = function (newName, newActivities) {
   const profileName = document.querySelector('.profile__name');

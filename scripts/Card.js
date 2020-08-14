@@ -1,4 +1,4 @@
-import { setupCloseActionsForPopup, openPopup } from './index.js';
+import { openPopup } from './index.js';
 
 export default class Card {
   constructor(data, cardSelector) {
@@ -20,16 +20,11 @@ export default class Card {
     this._element.querySelector('.element__like-button').addEventListener('click', this._likeElement);
     this._element.querySelector('.element__delete-button').addEventListener('click', this._deleteElement);
     this._element.querySelector('.element__photo').addEventListener('click', () => {
-      this._setupAndOpenPopup();
+      const popup = document.querySelector('.popup_for_photo');
+      popup.querySelector('.popup__image').src = this._image;
+      popup.querySelector('.popup__caption').textContent = this._name;
+      openPopup(popup);
     });
-  }
-
-  _setupAndOpenPopup() {
-    const popup = document.querySelector('.popup_for_photo');
-    popup.querySelector('.popup__image').src = this._image;
-    popup.querySelector('.popup__caption').textContent = this._name;
-    setupCloseActionsForPopup(popup);
-    openPopup(popup);
   }
 
   _likeElement(evt) {
