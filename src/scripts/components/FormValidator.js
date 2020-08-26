@@ -6,7 +6,9 @@ export default class FormValidator {
 
   enableValidation() {
     this._form.addEventListener('submit', function (evt) {
-      evt.preventDefault();
+      setTimeout(() => {
+        evt.preventDefault();
+      }, 10);
     });
 
     this._setEventListeners();
