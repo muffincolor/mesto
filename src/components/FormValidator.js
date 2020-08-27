@@ -44,8 +44,10 @@ export default class FormValidator {
   _checkInputValidity(inputElement) {
     if (!inputElement.validity.valid) {
       this._showInputError(inputElement, inputElement.validationMessage);
+      this._form.querySelector(this._params['submitButtonSelector']).disabled = true;
     } else {
       this._hideInputError(inputElement);
+      this._form.querySelector(this._params['submitButtonSelector']).disabled = false;
     }
   }
 

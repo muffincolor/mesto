@@ -1,11 +1,9 @@
-// webpack.config.js
-const path = require('path'); // подключаем path к конфигу вебпак
-const HtmlWebpackPlugin = require('html-webpack-plugin'); // подключите плагин
-// подключите к проекту mini-css-extract-plugin
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-  entry: { main: './src/scripts/pages/index.js' },
+  entry: { main: './src/pages/index.js' },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'main.js'
@@ -30,23 +28,24 @@ module.exports = {
           'postcss-loader'
         ],
       },
-      // аналогично добавьте правило для работы с html
       {
         test: /\.html$/,
         loader: 'html-loader',
       },
       {
-        // регулярное выражение, которое ищет все файлы с такими расширениями
-        test: /\.(png|svg|jpg|gif|woff2|ttf|woff|eot)$/,
-        // при обработке этих файлов нужно использовать file-loader
-        loader: 'file-loader'
+        test: /\.(png|svg|jpg|gif)$/,
+        loader: 'file-loader?name=./images/[name].[ext]'
+      },
+      {
+        test: /\.(eot|ttf|woff|woff2)$/,
+        loader: 'file-loader?name=./vendor/[name].[ext]',
       }
     ]
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html'// путь к файлу index.html
+      template: './src/index.html'
     }),
     new MiniCssExtractPlugin()
-  ] // добавьте массив
+  ]
 }

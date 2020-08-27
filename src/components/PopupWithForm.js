@@ -8,25 +8,22 @@ export class PopupWithForm extends Popup {
   }
 
   _getInputValues() {
-    return Array.from(this._popup.querySelector('.popup__form').elements);
+    return this._popup.querySelector('.popup__form').elements;
   }
 
   setEventListeners() {
-    this._handleEscClose();
     this._popup.addEventListener('click', (evt) => {
       if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close-btn')) {
         this.close();
       }
     });
-    this._popup.addEventListener('submit', this._callback)
+    this._popup.addEventListener('submit', (evt) => {
+      this._callback(evt, this._getInputValues());
+    });
   }
 
   close() {
-    this._getInputValues().forEach((input) => {
-      if(input.type === 'text' || input.type === 'url') {
-        input.value = '';
-      }
-    });
-    this._popup.classList.remove('popup_active');
+    this._popup.querySelector('.popup__form').reset();
+    super.close();
   }
 }

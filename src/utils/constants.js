@@ -34,5 +34,8 @@ const params = {
 };
 const editPopup = '.popup_for_edit';
 const addPopup = '.popup_for_add';
+const editButton = document.querySelector('.profile__edit-button');
+const addButton = document.querySelector('.profile__add-button');
+const editForm = document.querySelector(editPopup).querySelector('.popup__form');
 
-export { initialCards, cardsBlock, editPopup, addPopup, params };
+export { initialCards, cardsBlock, editPopup, addPopup, params, editForm, editButton, addButton };

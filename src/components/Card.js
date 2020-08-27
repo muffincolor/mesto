@@ -1,5 +1,3 @@
-import {PopupWithImage} from "./PopupWithImage";
-
 export default class Card {
   constructor({ name, link }, cardSelector, handleCardClick) {
     this._name = name;
@@ -39,6 +37,7 @@ export default class Card {
 
     this._element.querySelector('.element__info').querySelector('.element__title').textContent = this._name;
     this._element.querySelector('.element__photo').src = this._image;
+    this._element.querySelector('.element__photo').alt = this._name;
 
     return this._element;
   }
