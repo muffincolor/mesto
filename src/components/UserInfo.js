@@ -1,24 +1,18 @@
 export class UserInfo {
-  constructor({ name, activities }) {
-    this._name = name;
-    this._activities = activities;
+  constructor({ profileNameSelector, profileActivitiesSelector }) {
+    this._nameSelector = profileNameSelector;
+    this._activitiesSelector = profileActivitiesSelector;
   }
 
   getUserInfo() {
     return {
-      name: this._name,
-      activities: this._activities
+      name: this._nameSelector.textContent,
+      activities: this._activitiesSelector.textContent
     };
   }
 
-  rerenderUserInfo() {
-    document.querySelector('.profile__name').textContent = this._name;
-    document.querySelector('.profile__activities').textContent = this._activities;
-  }
-
   setUserInfo(name, activities) {
-    this._name = name;
-    this._activities = activities;
-    this.rerenderUserInfo();
+    this._nameSelector.textContent = name;
+    this._activitiesSelector.textContent = activities;
   }
 }

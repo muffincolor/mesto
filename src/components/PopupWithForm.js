@@ -8,7 +8,13 @@ export class PopupWithForm extends Popup {
   }
 
   _getInputValues() {
-    return this._popup.querySelector('.popup__form').elements;
+    const result = {};
+    Array.from(this._popup.querySelector('.popup__form').elements).forEach((input) => {
+      if(input.type === 'url' || input.type === 'text') {
+        result[input.name] = input.value;
+      }
+    });
+    return result;
   }
 
   setEventListeners() {
@@ -18,7 +24,9 @@ export class PopupWithForm extends Popup {
       }
     });
     this._popup.addEventListener('submit', (evt) => {
-      this._callback(evt, this._getInputValues());
+      evt.preventDefault();
+      this._getInputValues()
+      this._callback(this._getInputValues());
     });
   }
 

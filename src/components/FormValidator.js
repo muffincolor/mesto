@@ -30,8 +30,10 @@ export default class FormValidator {
   _toggleButtonState() {
     if (this._hasInvalidInput()) {
       this._submitButtonSelector.classList.add('popup__button_status_inactive');
+      this._form.querySelector(this._params['submitButtonSelector']).disabled = true;
     } else {
       this._submitButtonSelector.classList.remove('popup__button_status_inactive');
+      this._form.querySelector(this._params['submitButtonSelector']).disabled = false;
     }
   }
 
@@ -44,10 +46,8 @@ export default class FormValidator {
   _checkInputValidity(inputElement) {
     if (!inputElement.validity.valid) {
       this._showInputError(inputElement, inputElement.validationMessage);
-      this._form.querySelector(this._params['submitButtonSelector']).disabled = true;
     } else {
       this._hideInputError(inputElement);
-      this._form.querySelector(this._params['submitButtonSelector']).disabled = false;
     }
   }
 
