@@ -18,33 +18,30 @@ import {PopupWithForm} from "../components/PopupWithForm";
 import {UserInfo} from "../components/UserInfo";
 import {PopupWithImage} from "../components/PopupWithImage";
 
-let userInfo = new UserInfo({
-  name: document.querySelector('.profile__name').textContent,
-  activities: document.querySelector('.profile__activities').textContent
+const userInfo = new UserInfo({
+  profileNameSelector: document.querySelector('.profile__name'),
+  profileActivitiesSelector: document.querySelector('.profile__activities')
 });
 
-const editPopupElement = new PopupWithForm((evt, inputs) => {
-  evt.preventDefault();
-  userInfo.setUserInfo(inputs.name.value, inputs.activities.value);
+const editPopupElement = new PopupWithForm((values) => {
+  userInfo.setUserInfo(values.name, values.activities);
   editPopupElement.close();
 }, editPopup);
 editPopupElement.setEventListeners();
 
 const createNewCard = function (data, cardSectionSelector) {
-  return new Card(data, cardSectionSelector, (evt) => {
+  return new Card(data, cardSectionSelector, (cardName, cardImage) => {
     imagePopupElement.open({
-      name: evt.target.closest('.element').querySelector('.element__title').textContent,
-      link: evt.target.closest('.element').querySelector('.element__photo').src
+      name: cardName,
+      link: cardImage
     });
   });
 }
 
-const addPopupElement = new PopupWithForm((evt) => {
-  evt.preventDefault();
-
+const addPopupElement = new PopupWithForm((values) => {
   const card = createNewCard({
-    name: evt.target.elements.title.value,
-    link: evt.target.elements.url.value
+    name: values.title,
+    link: values.url
   }, '#element-template');
 
   cardsList.addItem(card.generateCard());
@@ -52,7 +49,7 @@ const addPopupElement = new PopupWithForm((evt) => {
 }, addPopup);
 addPopupElement.setEventListeners();
 
-const imagePopupElement = new PopupWithImage({}, '.popup_for_photo');
+const imagePopupElement = new PopupWithImage('.popup_for_photo');
 imagePopupElement.setEventListeners();
 
 const cardsList = new Section({
