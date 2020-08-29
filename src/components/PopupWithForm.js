@@ -10,9 +10,7 @@ export class PopupWithForm extends Popup {
   _getInputValues() {
     const result = {};
     Array.from(this._popup.querySelector('.popup__form').elements).forEach((input) => {
-      if(input.type === 'url' || input.type === 'text') {
-        result[input.name] = input.value;
-      }
+      result[input.name] = input.value;
     });
     return result;
   }
@@ -25,7 +23,6 @@ export class PopupWithForm extends Popup {
     });
     this._popup.addEventListener('submit', (evt) => {
       evt.preventDefault();
-      this._getInputValues()
       this._callback(this._getInputValues());
     });
   }
