@@ -1,0 +1,50 @@
+.profile__photo-container {
+  position: relative;
+  border-radius: 100px;
+  transition: all 1s ease;
+  -webkit-transition: all .3s ease;
+  -moz-transition: all .3s ease;
+  -ms-transition: all .3s ease;
+  -o-transition: all .3s ease;
+
+  outline: none;
+}
+
+.profile__photo-container:after {
+  content: '';
+  outline: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("../../../images/edit.svg") no-repeat;
+  background-size: 26px 26px;
+  background-position: center center;
+  opacity: 0;
+  transition: all 1s ease;
+  -webkit-transition: all .3s ease;
+  -moz-transition: all .3s ease;
+  -ms-transition: all .3s ease;
+  -o-transition: all .3s ease;
+}
+
+.profile__photo-container:before {
+  content: "";
+  outline: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transition: all 1s ease;
+  -webkit-transition: all .3s ease;
+  -moz-transition: all .3s ease;
+  -ms-transition: all .3s ease;
+  -o-transition: all .3s ease;
+}
+
+.profile__photo-container:hover:before,
+.profile__photo-container:hover:after { opacity: 1; cursor: pointer }

@@ -27,6 +27,15 @@ export class PopupWithForm extends Popup {
     });
   }
 
+  renderLoading(isLoading) {
+    if(isLoading) {
+      this._mainText = this._popup.querySelector('.popup__button').textContent;
+      this._popup.querySelector('.popup__button').textContent = 'Сохранение...';
+    } else {
+      this._popup.querySelector('.popup__button').textContent = this._mainText;
+    }
+  }
+
   close() {
     this._popup.querySelector('.popup__form').reset();
     super.close();

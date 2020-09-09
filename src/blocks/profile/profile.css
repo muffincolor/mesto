@@ -6,6 +6,7 @@
 @import url(./__name/profile__name.css);
 @import url(./__photo/profile__photo.css);
 @import url(./__supporting-block/profile__supporting-block.css);
+@import url(./__photo-container/profile__photo-container.css);
 
 .profile {
   width: 70%;
