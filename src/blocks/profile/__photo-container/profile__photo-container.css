@@ -6,7 +6,8 @@
   -moz-transition: all .3s ease;
   -ms-transition: all .3s ease;
   -o-transition: all .3s ease;
-
+  display: flex;
+  justify-content: center;
   outline: none;
 }
 

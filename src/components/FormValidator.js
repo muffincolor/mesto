@@ -2,9 +2,14 @@ export default class FormValidator {
   constructor(data, form) {
     this._params = data;
     this._form = form;
+    this._inactiveButtonClass = this._params['inactiveButtonClass'];
+    this._inputSelector = this._params['inputSelector']
+    this._submitButton = this._form.querySelector(this._params['submitButtonSelector']);
   }
 
   enableValidation() {
+    this._inputList = Array.from(this._form.querySelectorAll(this._inputSelector))
+
     this._form.addEventListener('submit', function (evt) {
       setTimeout(() => {
         evt.preventDefault();
@@ -15,8 +20,6 @@ export default class FormValidator {
   }
 
   _setEventListeners() {
-    this._inputList = Array.from(this._form.querySelectorAll(this._params['inputSelector']));
-    this._submitButtonSelector = this._form.querySelector(this._params['submitButtonSelector']);
     this._toggleButtonState();
 
     this._inputList.forEach((inputElement) => {
@@ -29,11 +32,11 @@ export default class FormValidator {
 
   _toggleButtonState() {
     if (this._hasInvalidInput()) {
-      this._submitButtonSelector.classList.add('popup__button_status_inactive');
-      this._submitButtonSelector.disabled = true;
+      this._submitButton.classList.add(this._inactiveButtonClass);
+      this._submitButton.disabled = true;
     } else {
-      this._submitButtonSelector.classList.remove('popup__button_status_inactive');
-      this._submitButtonSelector.disabled = false;
+      this._submitButton.classList.remove(this._inactiveButtonClass);
+      this._submitButton.disabled = false;
     }
   }
 

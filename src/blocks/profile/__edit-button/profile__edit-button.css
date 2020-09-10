@@ -32,6 +32,7 @@
     width: 18px;
     height: 18px;
     padding: 0;
-    margin-left: 2px;
+    justify-self: center;
+    margin-left: 0;
   }
 }

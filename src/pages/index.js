@@ -1,7 +1,5 @@
 import './index.css';
 
-import {api} from '../components/Api.js';
-
 import {
   addPopup,
   cardsBlock,
@@ -12,8 +10,9 @@ import {
   addButton,
   changePhotoPopup,
   editPhotoButton,
-  confirmPopupSelector
-} from "../utils/constants";
+  confirmPopupSelector,
+  renderLoading, sendError
+} from "../utils/Constants";
 
 import FormValidator from '../components/FormValidator.js';
 import Card from '../components/Card.js';
@@ -23,17 +22,20 @@ import {UserInfo} from "../components/UserInfo";
 import {PopupWithImage} from "../components/PopupWithImage";
 import {PopupForConfirm} from "../components/PopupForConfirm";
 import OwnCard from "../components/OwnCard";
+import Api from "../components/Api";
+
+const api = new Api({
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-15',
+  headers: {
+    authorization: '34b321e7-b4e4-4ac9-9db1-e3a7134426f4',
+    'Content-Type': 'application/json'
+  }
+});
 
 const userInfo = new UserInfo({
   profileNameSelector: document.querySelector('.profile__name'),
   profileActivitiesSelector: document.querySelector('.profile__activities'),
   profileImageSelector: document.querySelector('.profile__photo'),
-});
-
-api.getProfileInfo().then((data) => {
-  userInfo.setUserInfo(data.name, data.about);
-  userInfo.setUserImage(data.avatar);
-  userInfo.setUserID(data._id);
 });
 
 const cardsList = new Section({
@@ -46,14 +48,23 @@ const cardsList = new Section({
       card = createNewCard(item, '#element-template', false);
     }
     const cardElement = card.generateCard();
-    cardsList.addItem(cardElement);
+    cardsList.addItem(cardElement, true);
   }
 }, cardsBlock);
 
-api.getInitialCards().then((data) => {
-  cardsList.setData(data);
-  cardsList.renderItems();
-});
+Promise.all([
+  api.getProfileInfo(),
+  api.getInitialCards()
+])
+  .then(values => {
+    const [userData, initialCards] = values;
+    userInfo.setUserInfo(userData.name, userData.about);
+    userInfo.setUserImage(userData.avatar);
+    userInfo.setUserID(userData._id);
+    cardsList.setData(initialCards);
+    cardsList.renderItems();
+  })
+  .catch((error) => sendError(error));
 
 const confirmPopupElement = new PopupForConfirm(confirmPopupSelector, (cardId) => {
   api.deleteCard(cardId).then((data) => {
@@ -103,59 +114,69 @@ const defineLikedCard = function(data) {
 
 const likeCardCallBack = function (isLiked, cardId, card, evt) {
   if (!isLiked) {
-    api.likeCard(cardId).then(data => {
-      card._likes = data.likes.length;
-      evt.target.closest('.element').querySelector('.element__likes').textContent = card._likes;
-      evt.target.classList.toggle('element__like-button_status_active');
-      card._isLiked = true;
-    });
+    api.likeCard(cardId)
+      .then(data => {
+        card._likes = data.likes.length;
+        evt.target.closest('.element').querySelector('.element__likes').textContent = card._likes;
+        evt.target.classList.toggle('element__like-button_status_active');
+        card._isLiked = true;
+      })
+      .catch((error) => sendError(error));
   } else {
-    api.unLikeCard(cardId).then(data => {
-      card._likes = data.likes.length;
-      evt.target.closest('.element').querySelector('.element__likes').textContent = card._likes;
-      evt.target.classList.toggle('element__like-button_status_active');
-      card._isLiked = false;
-    });
+    api.unLikeCard(cardId)
+      .then(data => {
+        card._likes = data.likes.length;
+        evt.target.closest('.element').querySelector('.element__likes').textContent = card._likes;
+        evt.target.classList.toggle('element__like-button_status_active');
+        card._isLiked = false;
+      })
+      .catch((error) => sendError(error));
   }
 }
 
 const changePhotoElement = new PopupWithForm((values) => {
-  addPopupElement.renderLoading(true);
-  api.updateUserPhoto(values.link).then((data) => {
-    userInfo.setUserImage(values.link);
-    changePhotoElement.close();
-    addPopupElement.renderLoading(false);
-  });
+  renderLoading(changePhotoElement, true);
+  api.updateUserPhoto(values.link)
+    .then((data) => {
+      userInfo.setUserImage(values.link);
+      changePhotoElement.close();
+      renderLoading(changePhotoElement, false);
+    })
+    .catch((error) => sendError(error));
 }, changePhotoPopup);
 changePhotoElement.setEventListeners();
 
 const editPopupElement = new PopupWithForm((values) => {
-  addPopupElement.renderLoading(true);
-  api.updateUserProfileInfo({name: values.name, about: values.activities}).then(data => {
-    userInfo.setUserInfo(data.name, data.about);
-    editPopupElement.close();
-    addPopupElement.renderLoading(false);
-  });
+  renderLoading(editPopupElement, true);
+  api.updateUserProfileInfo({name: values.name, about: values.activities})
+    .then(data => {
+      userInfo.setUserInfo(data.name, data.about);
+      editPopupElement.close();
+      renderLoading(editPopupElement, false);
+    })
+    .catch((error) => sendError(error));
 }, editPopup);
 editPopupElement.setEventListeners();
 
 const addPopupElement = new PopupWithForm((values) => {
-  addPopupElement.renderLoading(true);
+  renderLoading(addPopupElement, true);
   api.addNewCard({
     name: values.title,
     link: values.url,
     likes: []
-  }).then(data => {
-    const card = createNewCard({
-      name: data.name,
-      link: data.link,
-      likes: data.likes,
-      _id: data._id
-    }, '#own-element-template', true);
-    cardsList.addItem(card.generateCard());
-    addPopupElement.close();
-    addPopupElement.renderLoading(false);
-  });
+  })
+    .then(data => {
+      const card = createNewCard({
+        name: data.name,
+        link: data.link,
+        likes: data.likes,
+        _id: data._id
+      }, '#own-element-template', true);
+      cardsList.addItem(card.generateCard(), false);
+      addPopupElement.close();
+      renderLoading(addPopupElement, false);
+    })
+    .catch((error) => sendError(error));
 }, addPopup);
 addPopupElement.setEventListeners();
 

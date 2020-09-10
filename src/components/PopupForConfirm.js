@@ -13,14 +13,6 @@ export class PopupForConfirm extends Popup {
     super.open();
   }
 
-  renderLoading(isLoading) {
-    if(isLoading) {
-      this._popup.querySelector('.popup__button').textContent = 'Сохранение...';
-    } else {
-      this._popup.querySelector('.popup__button').textContent = 'Да';
-    }
-  }
-
   setupConfirmation() {
     this._popup.addEventListener('submit', (evt) => {
       evt.preventDefault();

@@ -7,3 +7,10 @@
   /* opacity: 0; */
   transition: visibility .5s, opacity .5s linear;
 }
+
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .popup__form-block {
+    width: auto;
+    padding-left: 15px;
+  }
+}

@@ -1,4 +1,4 @@
-class Api {
+export default class Api {
   constructor({baseUrl, headers}) {
     this.baseUrl = baseUrl;
     this.headers = headers;
@@ -9,15 +9,8 @@ class Api {
       headers: this.headers
     })
       .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-
-        return Promise.reject(`Ошибка: ${res.status}`);
+        return this._getResponseData(res);
       })
-      .catch(err => {
-        console.log(`Ошибка: ${err}`);
-      });
   }
 
   getProfileInfo() {
@@ -25,15 +18,8 @@ class Api {
       headers: this.headers
     })
       .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-
-        return Promise.reject(`Ошибка: ${res.status}`);
+        return this._getResponseData(res);
       })
-      .catch(err => {
-        console.log(`Ошибка: ${err}`);
-      });
   }
 
   updateUserPhoto(userPhotoLink) {
@@ -43,15 +29,8 @@ class Api {
       body: JSON.stringify({avatar: userPhotoLink})
     })
       .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-
-        return Promise.reject(`Ошибка: ${res.status}`);
+        return this._getResponseData(res);
       })
-      .catch(err => {
-        console.log(`Ошибка: ${err}`);
-      });
   }
 
   updateUserProfileInfo(userInfo) {
@@ -64,15 +43,8 @@ class Api {
       })
     })
       .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-
-        return Promise.reject(`Ошибка: ${res.status}`);
+        return this._getResponseData(res);
       })
-      .catch(err => {
-        console.log(`Ошибка: ${err}`);
-      });
   }
 
   addNewCard(cardData) {
@@ -85,15 +57,16 @@ class Api {
       })
     })
       .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-
-        return Promise.reject(`Ошибка: ${res.status}`);
+        return this._getResponseData(res);
       })
-      .catch(err => {
-        console.log(`Ошибка: ${err}`);
-      });
+  }
+
+  _getResponseData(res) {
+    if (res.ok) {
+      return res.json();
+    }
+
+    return Promise.reject(new Error(`Ошибка: ${res.status}`));
   }
 
   deleteCard(cardID) {
@@ -101,14 +74,8 @@ class Api {
       method: 'DELETE',
       headers: this.headers
     }).then(res => {
-      if(res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
+      return this._getResponseData(res);
     })
-      .catch(err => {
-        console.log(`Ошибка: ${err}`);
-      });
   }
 
   likeCard(cardId) {
@@ -117,13 +84,7 @@ class Api {
       headers: this.headers
     })
       .then(res => {
-        if(res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .catch(err => {
-        console.log(`Ошибка: ${err}`);
+        return this._getResponseData(res);
       })
   }
 
@@ -133,21 +94,7 @@ class Api {
       headers: this.headers
     })
       .then(res => {
-        if(res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .catch(err => {
-        console.log(`Ошибка: ${err}`);
+        return this._getResponseData(res);
       })
   }
 }
-
-export const api = new Api({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-15',
-  headers: {
-    authorization: '34b321e7-b4e4-4ac9-9db1-e3a7134426f4',
-    'Content-Type': 'application/json'
-  }
-});

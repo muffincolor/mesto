@@ -16,4 +16,17 @@ const editPhotoButton = document.querySelector('.profile__photo-container');
 const confirmPopupSelector = '.popup_for_confirm';
 const editForm = document.querySelector(editPopup).querySelector('.popup__form');
 
-export { confirmPopupSelector, editPhotoButton, changePhotoPopup, cardsBlock, editPopup, addPopup, params, editForm, editButton, addButton };
+const renderLoading = function(popup, isLoading) {
+  if(isLoading) {
+    popup._buttonMainText = popup._popupButton.textContent;
+    popup._popupButton.textContent = 'Сохранение...';
+  } else {
+    popup._popupButton.textContent = popup._buttonMainText;
+  }
+}
+
+const sendError = function (errText) {
+  new Error(`Ошибка: ${errText}`);
+}
+
+export { sendError, renderLoading, confirmPopupSelector, editPhotoButton, changePhotoPopup, cardsBlock, editPopup, addPopup, params, editForm, editButton, addButton };

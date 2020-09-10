@@ -1,5 +1,5 @@
 @import url(./__button/popup__button.css);
-@import url(./__button/_status/_inactive/popup__button_status_inactive.css);
+@import url(./__button/disabled/popup__button_disabled.css);
 @import url(./__form-block/popup__form-block.css);
 @import url(./__form/popup__form.css);
 @import url(./__input/popup__input.css);

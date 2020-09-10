@@ -16,24 +16,11 @@ export class PopupWithForm extends Popup {
   }
 
   setEventListeners() {
-    this._popup.addEventListener('click', (evt) => {
-      if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close-btn')) {
-        this.close();
-      }
-    });
+    super.setEventListeners();
     this._popup.addEventListener('submit', (evt) => {
       evt.preventDefault();
       this._callback(this._getInputValues());
     });
-  }
-
-  renderLoading(isLoading) {
-    if(isLoading) {
-      this._mainText = this._popup.querySelector('.popup__button').textContent;
-      this._popup.querySelector('.popup__button').textContent = 'Сохранение...';
-    } else {
-      this._popup.querySelector('.popup__button').textContent = this._mainText;
-    }
   }
 
   close() {
